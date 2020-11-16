@@ -1,0 +1,71 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>WebAppDI</title>
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+</head>
+
+<body>
+    <h1>Data Simple:</h1>
+    <div id="DataContainer"></div>
+    <h1>Data Formal:</h1>
+    <div id="DataContainer2"></div>
+    <script>
+        class JSONObj{
+            constructor(data){
+                this.data = data;
+            }
+        }
+
+        class SimpleDisplay{
+            constructor(data, container){
+                this.json = data;
+                this.container = container;
+            }
+            show(){
+                this.container.innerHTML = JSON.stringify(data);
+            }
+        }
+
+        class FormalDisplay{
+            constructor(data, container){
+                this.json = data;
+                this.container = container;
+            }
+            show(){
+                var html = '<table border="5"><tr><th>Manufacturer</th><th>Year</th><th>Price</th></tr>';
+                var data = this.json.data.cars
+                data.forEach(function (data) {
+                    html += '<tr><th>'
+                        +data.name+'</th><th>'
+                        +data.year+"</th><th>"
+                        +(parseInt(data.price)).toLocaleString('en-US',{style:'currency',currency:'USD'})
+                        +'$</th></tr>';  
+                });
+                html+='</table>';
+                this.container.innerHTML = html;
+            }
+        }
+
+        const jsonDataMock = {
+                "cars": [
+                    { "name":"Ford", "year":"2010", "price":"5000"},
+                    { "name":"BMW", "year":"2020", "price":"25000"},
+                    { "name":"Fiat", "year":"2015", "price":"9000"},
+                ]
+            }
+
+        const displayContainer = document.getElementById("DataContainer");
+        const displayContainer2 = document.getElementById("DataContainer2");
+
+        var data = new JSONObj(jsonDataMock);
+        var simpDisp = new SimpleDisplay(data, displayContainer);
+        var formDisp = new FormalDisplay(data, displayContainer2);
+        simpDisp.show();
+        formDisp.show();
+
+    </script>
+</body>
+</html>
